@@ -1,0 +1,12 @@
+- id: llm-code-review
+  name: LLM Code Review
+  description: Run Code Review by a LLM
+  entry: code_review.py
+  language: python
+  verbose: true
+  pass_filenames: true
+  additional_dependencies:
+    - absl-py
+    - langchain[google-genai]
+    - langchain-ollama
+    - rich
