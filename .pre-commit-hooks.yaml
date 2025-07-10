@@ -10,3 +10,6 @@
     - langchain[google-genai]
     - langchain-ollama
     - rich
+  stages:
+    - pre-commit
+    - pre-merge-commit
