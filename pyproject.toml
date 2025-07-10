@@ -10,6 +10,9 @@ dependencies = [
   "rich",
 ]
 
+[project.scripts]
+llm-code-review = "hooks.code_review:main"
+
 [tool.setuptools.packages.find]
 where = ["hooks"]
 
