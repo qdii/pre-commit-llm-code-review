@@ -1,6 +1,7 @@
 #!/sbin/python3
 import os
 import subprocess
+import sys
 
 from absl import app
 from absl import flags
@@ -13,8 +14,6 @@ from rich.console import Console
 from rich.markdown import Markdown
 
 FLAGS = flags.FLAGS
-flags.DEFINE_string("prev_commit", None, "The previous commit")
-flags.DEFINE_string("next_commit", None, "The next commit")
 flags.DEFINE_string(
     "ollama_base_url",
     "http://localhost:11434",
@@ -28,9 +27,6 @@ flags.DEFINE_string(
 )
 flags.DEFINE_string("api_key", "", "The API key to use when querying Gemini")
 flags.DEFINE_bool("debug", False, "Activate debug logging")
-
-flags.mark_flag_as_required("prev_commit")
-flags.mark_flag_as_required("next_commit")
 
 
 prompt = """
@@ -85,12 +81,15 @@ def git_diff(prev: str, next: str) -> str:
 
 
 def main(argv):
-    del argv
+    if len(argv) < 3:
+        logging.error("Usage: %s <prev_commit> <next_commit>", argv[0])
+        sys.exit(1)
+
     set_logging_verbosity()
 
     console = Console()
     try:
-        diff_output = git_diff(prev=FLAGS.prev_commit, next=FLAGS.next_commit)
+        diff_output = git_diff(prev=sys.argv[1], next=sys.argv[2])
     except subprocess.CalledProcessError as e:
         logging.error("Calling 'git diff' failed with error: %s", e.output)
         exit(1)
