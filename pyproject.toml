@@ -13,6 +13,9 @@ dependencies = [
 [project.scripts]
 llm-code-review = "hooks.code_review:main"
 
+[tool.setuptools]
+packages = ["hooks"]
+
 [tool.setuptools.packages.find]
 where = ["hooks"]
 
