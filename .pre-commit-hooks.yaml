@@ -7,6 +7,7 @@
   pass_filenames: true
   additional_dependencies:
     - absl-py
+    - httpx
     - langchain[google-genai]
     - langchain-ollama
     - rich

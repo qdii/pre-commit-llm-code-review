@@ -5,6 +5,7 @@ import subprocess
 from absl import app
 from absl import flags
 from absl import logging
+from httpx import ConnectError
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -101,7 +102,11 @@ def main(argv):
     chain = PROMPT | llm | output_parser
 
     print("Running diffs...")
-    results = chain.invoke({"diff": diff_output})
+    try:
+        results = chain.invoke({"diff": diff_output})
+    except ConnectError as e:
+        logging.error("Cannot send request to LLM: %s", e)
+        exit(1)
 
     md = Markdown(results)
     console.print(md)

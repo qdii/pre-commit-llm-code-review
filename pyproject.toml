@@ -5,6 +5,7 @@ version = "1.0.9"
 license = "GPL-3.0"
 dependencies = [
   "absl-py",
+  "httpx",
   "langchain[google-genai]",
   "langchain-ollama",
   "rich",
