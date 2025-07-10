@@ -17,6 +17,8 @@ Add to your `.pre-commit-config.yaml`:
 
 ## Usage with Gemini
 
+Add to your `.pre-commit-config.yaml`:
+
 ```yaml
 - repo: https://github.com/qdii/pre-commit-llm-code-review
   rev: v1.1.0
