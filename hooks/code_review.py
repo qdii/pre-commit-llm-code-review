@@ -112,5 +112,9 @@ def main(argv):
     console.print(md)
 
 
-if __name__ == "__main__":
+def entrypoint():
     app.run(main)
+
+
+if __name__ == "__main__":
+    entrypoint()

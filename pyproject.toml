@@ -11,7 +11,7 @@ dependencies = [
 ]
 
 [project.scripts]
-llm-code-review = "hooks.code_review:main"
+llm-code-review = "hooks.code_review:entrypoint"
 
 [tool.setuptools]
 packages = ["hooks"]
