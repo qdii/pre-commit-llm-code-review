@@ -1,7 +1,6 @@
 #!/sbin/python3
 import os
 import subprocess
-import sys
 
 from absl import app
 from absl import flags
@@ -74,20 +73,19 @@ def set_logging_verbosity():
         logging.set_verbosity(logging.ERROR)
 
 
-def git_diff(prev: str, next: str) -> str:
-    git_diff_command = f"git diff {prev} {next}"
+def git_diff() -> str:
+    git_diff_command = "git diff 'HEAD^' 'HEAD'"
     raw_output = subprocess.check_output(git_diff_command, shell=True, cwd=os.getcwd())
     return raw_output.decode("utf-8")
 
 
 def main(argv):
     del argv
-    print(os.environ)
     set_logging_verbosity()
 
     console = Console()
     try:
-        diff_output = git_diff(prev=sys.argv[1], next=sys.argv[2])
+        diff_output = git_diff()
     except subprocess.CalledProcessError as e:
         logging.error("Calling 'git diff' failed with error: %s", e.output)
         exit(1)
