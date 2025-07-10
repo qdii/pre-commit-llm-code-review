@@ -39,3 +39,11 @@ Add to your `.pre-commit-config.yaml`:
 | --model           | The name of the model to use          |
 | --api_key         | Only for Gemini. The API key to use   |
 | --debug           | Extra logging for debugging purposes  |
+
+## Note about context
+
+This hook sends the output of `git diff "HEAD^" "HEAD"` to a LLM, and prompts it to perform a code review on it.
+
+First, this diff can be large. If you are using Gemini, you probably have a [rate-limit](https://ai.google.dev/gemini-api/docs/rate-limits) in place that prevents you from sending too many tokens per minute.
+
+Second, only the diff is sent to a LLM, not the whole file. As a result, the LLM has limited context to work with. This can however be tweaked by changing [GIT_DIFF_OPTS](https://git-scm.com/book/en/v2/Git-Internals-Environment-Variables) to include more context lines in the output of `git diff`.
