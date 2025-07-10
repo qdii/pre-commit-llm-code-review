@@ -81,11 +81,8 @@ def git_diff(prev: str, next: str) -> str:
 
 
 def main(argv):
-    print(argv)
-    if len(argv) < 3:
-        logging.error("Usage: %s <prev_commit> <next_commit>", argv[0])
-        sys.exit(1)
-
+    del argv
+    print(os.environ)
     set_logging_verbosity()
 
     console = Console()
