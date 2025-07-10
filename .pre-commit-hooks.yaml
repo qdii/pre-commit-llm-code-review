@@ -13,4 +13,3 @@
     - rich
   stages:
     - pre-commit
-    - pre-merge-commit
