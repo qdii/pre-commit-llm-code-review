@@ -1,4 +1,7 @@
-A [pre-commit](https://pre-commit.com/) hook that sends the git diff to a LLM, so that it performs a code review on it.
+# README.md
+
+A [pre-commit](https://pre-commit.com/) hook that sends the git diff to a LLM,
+so that it performs a code review on it.
 
 ## Usage with ollama
 
@@ -42,8 +45,14 @@ Add to your `.pre-commit-config.yaml`:
 
 ## Note about context
 
-This hook sends the output of `git diff "HEAD^" "HEAD"` to a LLM, and prompts it to perform a code review on it.
+This hook sends the output of `git diff "HEAD^" "HEAD"` to a LLM
+and prompts it to perform a code review on it.
 
-First, this diff can be large. If you are using Gemini, you probably have a [rate-limit](https://ai.google.dev/gemini-api/docs/rate-limits) in place that prevents you from sending too many tokens per minute.
+First, this diff can be large. If you are using Gemini, you probably have a
+[rate-limit](https://ai.google.dev/gemini-api/docs/rate-limits) in place
+that prevents you from sending too many tokens per minute.
 
-Second, only the diff is sent to a LLM, not the whole file. As a result, the LLM has limited context to work with. This can however be tweaked by changing [GIT_DIFF_OPTS](https://git-scm.com/book/en/v2/Git-Internals-Environment-Variables) to include more context lines in the output of `git diff`.
+Second, only the diff is sent to a LLM, not the whole file. As a result,
+the LLM has limited context to work with. This can however be tweaked
+by changing [GIT_DIFF_OPTS](https://git-scm.com/book/en/v2/Git-Internals-Environment-Variables)
+to include more context lines in the output of `git diff`.
