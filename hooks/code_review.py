@@ -27,6 +27,11 @@ flags.DEFINE_string(
 )
 flags.DEFINE_string("api_key", "", "The API key to use when querying Gemini")
 flags.DEFINE_bool("debug", False, "Activate debug logging")
+flags.DEFINE_float(
+    "temperature",
+    0.0,
+    "Run inference with this temperature. Must be between 0.0 and 2.0",
+)
 
 
 prompt = """
@@ -52,7 +57,7 @@ def new_llm() -> ChatGoogleGenerativeAI | ChatOllama:
             raise ValueError('--api_key must be set when --llm is "gemini"')
         return ChatGoogleGenerativeAI(
             model=FLAGS.model,
-            temperature=0,
+            temperature=FLAGS.temperature,
             max_tokens=None,
             timeout=None,
             max_retries=2,
@@ -63,6 +68,7 @@ def new_llm() -> ChatGoogleGenerativeAI | ChatOllama:
             base_url=FLAGS.ollama_base_url,
             model=FLAGS.model,
             reasoning=False,
+            temperature=FLAGS.temperature,
         )
     raise ValueError('--llm should be either "gemini" or "ollama"')
 
