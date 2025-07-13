@@ -33,14 +33,29 @@ Add to your `.pre-commit-config.yaml`:
         - "--api_key=YOUR_API_KEY_HERE"
 ```
 
+## Usage with Mistral
+
+Add to your `.pre-commit-config.yaml`:
+
+```yaml
+- repo: https://github.com/qdii/pre-commit-llm-code-review
+  rev: v1.1.0
+  hooks:
+    - id: llm-code-review
+      args:
+        - "--llm=mistral"
+        - "--model=mistral-small"
+        - "--api_key=YOUR_API_KEY_HERE"
+```
+
 ## Options
 
 | Option            | Description                           |
 | ----------------- | ------------------------------------- |
-| --llm             | Either 'ollama' or 'gemini'           |
+| --llm             | 'ollama', 'gemini' or 'mistral'       |
 | --ollama_base_url | The URL of the Ollama server to query |
 | --model           | The name of the model to use          |
-| --api_key         | Only for Gemini. The API key to use   |
+| --api_key         | The API key to use Gemini or Mistral  |
 | --debug           | Extra logging for debugging purposes  |
 | --temperature     | Inference temperature, [0.0 - 2.0]    |
 
