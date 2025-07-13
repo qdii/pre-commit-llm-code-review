@@ -33,9 +33,9 @@ flags.DEFINE_float(
     0.0,
     "Run inference with this temperature. Must be between 0.0 and 2.0",
 )
-flags.DEFINE_string(
+flags.DEFINE_integer(
     "timeout",
-    "120",
+    120,
     "Number of seconds after which a call to the LLM is aborted",
 )
 
