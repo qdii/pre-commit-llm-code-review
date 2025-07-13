@@ -4,6 +4,7 @@
 
 ### Added
 
+- New parameter --timeout specifies deadline when querying LLM
 - New parameter --temperature controls inference temperature
 
 ## v1.1.0 (2025-07-10)
