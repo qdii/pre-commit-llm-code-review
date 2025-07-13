@@ -61,7 +61,7 @@ Add to your `.pre-commit-config.yaml`:
 
 ## Note about context
 
-This hook sends the output of `git diff "HEAD^" "HEAD"` to a LLM
+This hook sends the output of `git diff --cached` to a LLM
 and prompts it to perform a code review on it.
 
 First, this diff can be large. If you are using Gemini, you probably have a

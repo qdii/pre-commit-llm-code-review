@@ -6,6 +6,10 @@
 
 - Support for Mistral AI
 
+### Changed
+
+- Use `git diff --cached` instead of `git diff HEAD^ HEAD`
+
 ## v1.2.0 (2025-07-10)
 
 ### Added
