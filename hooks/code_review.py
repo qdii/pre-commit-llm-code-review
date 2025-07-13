@@ -34,7 +34,9 @@ flags.DEFINE_float(
     "Run inference with this temperature. Must be between 0.0 and 2.0",
 )
 flags.DEFINE_string(
-    "timeout", "120", "Number of seconds after which a call to the LLM is aborted",
+    "timeout",
+    "120",
+    "Number of seconds after which a call to the LLM is aborted",
 )
 
 
@@ -94,7 +96,7 @@ def set_logging_verbosity():
 
 
 def git_diff() -> str:
-    git_diff_command = "git diff 'HEAD^' 'HEAD'"
+    git_diff_command = "git diff --cached"
     raw_output = subprocess.check_output(git_diff_command, shell=True, cwd=os.getcwd())
     return raw_output.decode("utf-8")
 
