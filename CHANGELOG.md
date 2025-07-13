@@ -2,6 +2,12 @@
 
 ## Unreleased (2025-07-13)
 
+## v1.3.1 (2025-07-13)
+
+### Changed
+
+- Fix bug where --model was ignored for Mistral
+
 ## v1.3.0 (2025-07-13)
 
 ### Added
