@@ -2,6 +2,8 @@
 
 ## Unreleased (2025-07-13)
 
+## v1.3.0 (2025-07-13)
+
 ### Added
 
 - Support for Mistral AI
