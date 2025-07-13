@@ -42,6 +42,7 @@ Add to your `.pre-commit-config.yaml`:
 | --model           | The name of the model to use          |
 | --api_key         | Only for Gemini. The API key to use   |
 | --debug           | Extra logging for debugging purposes  |
+| --temperature     | Inference temperature, [0.0 - 2.0]    |
 
 ## Note about context
 
