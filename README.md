@@ -58,6 +58,7 @@ Add to your `.pre-commit-config.yaml`:
 | --api_key         | The API key to use Gemini or Mistral  |
 | --debug           | Extra logging for debugging purposes  |
 | --temperature     | Inference temperature, [0.0 - 2.0]    |
+| --retries         | How many times LLM should be queried  |
 
 ## Note about context
 
