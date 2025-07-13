@@ -79,7 +79,7 @@ def new_llm() -> ChatGoogleGenerativeAI | ChatOllama | ChatMistralAI:
         )
     elif FLAGS.llm == "mistral":
         return ChatMistralAI(
-            model="",
+            model=FLAGS.model,
             timeout=FLAGS.timeout,
             temperature=FLAGS.temperature,
             max_tokens=None,
