@@ -38,6 +38,7 @@ flags.DEFINE_integer(
     120,
     "Number of seconds after which a call to the LLM is aborted",
 )
+flags.DEFINE_integer("retries", 2, "Maximum number of retries when querying a LLM")
 
 
 prompt = """
@@ -66,7 +67,7 @@ def new_llm() -> ChatGoogleGenerativeAI | ChatOllama | ChatMistralAI:
             temperature=FLAGS.temperature,
             max_tokens=None,
             timeout=FLAGS.timeout,
-            max_retries=2,
+            max_retries=FLAGS.retries,
             google_api_key=FLAGS.api_key,
         )
     elif FLAGS.llm == "ollama":
@@ -83,7 +84,7 @@ def new_llm() -> ChatGoogleGenerativeAI | ChatOllama | ChatMistralAI:
             temperature=FLAGS.temperature,
             max_tokens=None,
             mistral_api_key=FLAGS.api_key,
-            max_retries=2,
+            max_retries=FLAGS.retries,
         )
     raise ValueError('--llm should be "gemini", "ollama" or "mistral"')
 

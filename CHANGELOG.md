@@ -5,6 +5,7 @@
 ### Added
 
 - Support for Mistral AI
+- New parameter --retries controls how many times LLM should be queried
 
 ### Changed
 
