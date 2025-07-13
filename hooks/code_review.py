@@ -9,6 +9,7 @@ from httpx import ConnectError
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_mistralai import ChatMistralAI
 from langchain_ollama import ChatOllama
 from rich.console import Console
 from rich.markdown import Markdown
@@ -19,7 +20,7 @@ flags.DEFINE_string(
     "http://localhost:11434",
     "The URL of the ollama server",
 )
-flags.DEFINE_string("llm", "ollama", "The LLM to use: either 'ollama' or 'gemini'")
+flags.DEFINE_string("llm", "ollama", "The LLM to use: 'ollama', 'gemini' or 'mistral'")
 flags.DEFINE_string(
     "model",
     "mistral-small3.2:latest",
@@ -33,7 +34,7 @@ flags.DEFINE_float(
     "Run inference with this temperature. Must be between 0.0 and 2.0",
 )
 flags.DEFINE_string(
-    "timeout", "120", "Number of seconds after which a call to the LLM is aborted"
+    "timeout", "120", "Number of seconds after which a call to the LLM is aborted",
 )
 
 
@@ -54,7 +55,7 @@ AI OUTPUT:
 """
 
 
-def new_llm() -> ChatGoogleGenerativeAI | ChatOllama:
+def new_llm() -> ChatGoogleGenerativeAI | ChatOllama | ChatMistralAI:
     if FLAGS.llm == "gemini":
         if not FLAGS.api_key:
             raise ValueError('--api_key must be set when --llm is "gemini"')
@@ -73,7 +74,16 @@ def new_llm() -> ChatGoogleGenerativeAI | ChatOllama:
             reasoning=False,
             timeout=FLAGS.timeout,
         )
-    raise ValueError('--llm should be either "gemini" or "ollama"')
+    elif FLAGS.llm == "mistral":
+        return ChatMistralAI(
+            model="",
+            timeout=FLAGS.timeout,
+            temperature=FLAGS.temperature,
+            max_tokens=None,
+            mistral_api_key=FLAGS.api_key,
+            max_retries=2,
+        )
+    raise ValueError('--llm should be "gemini", "ollama" or "mistral"')
 
 
 def set_logging_verbosity():
