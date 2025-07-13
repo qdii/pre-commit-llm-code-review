@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased (2025-07-13)
+
+### Added
+
+- Support for Mistral AI
+
 ## v1.2.0 (2025-07-10)
 
 ### Added
