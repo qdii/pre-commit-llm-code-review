@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased (2025-07-13)
+
+## v1.3.0 (2025-07-13)
+
+### Added
+
+- Support for Mistral AI
+- New parameter --retries controls how many times LLM should be queried
+
+### Changed
+
+- Use `git diff --cached` instead of `git diff HEAD^ HEAD`
+
 ## v1.2.0 (2025-07-10)
 
 ### Added
