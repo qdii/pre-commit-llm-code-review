@@ -32,6 +32,9 @@ flags.DEFINE_float(
     0.0,
     "Run inference with this temperature. Must be between 0.0 and 2.0",
 )
+flags.DEFINE_string(
+    "timeout", "120", "Number of seconds after which a call to the LLM is aborted"
+)
 
 
 prompt = """
@@ -59,7 +62,7 @@ def new_llm() -> ChatGoogleGenerativeAI | ChatOllama:
             model=FLAGS.model,
             temperature=FLAGS.temperature,
             max_tokens=None,
-            timeout=None,
+            timeout=FLAGS.timeout,
             max_retries=2,
             google_api_key=FLAGS.api_key,
         )
@@ -68,7 +71,7 @@ def new_llm() -> ChatGoogleGenerativeAI | ChatOllama:
             base_url=FLAGS.ollama_base_url,
             model=FLAGS.model,
             reasoning=False,
-            temperature=FLAGS.temperature,
+            timeout=FLAGS.timeout,
         )
     raise ValueError('--llm should be either "gemini" or "ollama"')
 
