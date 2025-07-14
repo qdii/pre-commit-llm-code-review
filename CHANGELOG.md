@@ -7,6 +7,7 @@
 ### Changed
 
 - Fix bug where --model was ignored for Mistral
+- Add missing dependency httpx in requirements.in
 
 ## v1.3.0 (2025-07-13)
 
