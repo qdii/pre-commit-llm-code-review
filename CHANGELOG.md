@@ -1,6 +1,13 @@
 # Changelog
 
-## Unreleased (2025-07-13)
+## Unreleased (2025-07-14)
+
+## v1.3.2 (2025-07-13)
+
+### Added
+
+- Add requirements.txt compiled from requirements.in
+- Add missing dependency httpx in requirements.in
 
 ## v1.3.1 (2025-07-13)
 
