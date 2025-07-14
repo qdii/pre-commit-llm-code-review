@@ -1,4 +1,5 @@
 absl-py
+httpx
 langchain[google-genai]
 langchain_mistralai
 langchain-ollama
