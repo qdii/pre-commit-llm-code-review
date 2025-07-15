@@ -3,6 +3,8 @@
 A [pre-commit](https://pre-commit.com/) hook that sends the git diff to a LLM,
 so that it performs a code review on it.
 
+The hook can be executed at two different [stages](https://pre-commit.com/#confining-hooks-to-run-at-certain-stages): pre-commit, or pre-merge-commit.
+
 ## Usage with ollama
 
 Add to your `.pre-commit-config.yaml`:
@@ -50,15 +52,16 @@ Add to your `.pre-commit-config.yaml`:
 
 ## Options
 
-| Option            | Description                           |
-| ----------------- | ------------------------------------- |
-| --llm             | 'ollama', 'gemini' or 'mistral'       |
-| --ollama_base_url | The URL of the Ollama server to query |
-| --model           | The name of the model to use          |
-| --api_key         | The API key to use Gemini or Mistral  |
-| --debug           | Extra logging for debugging purposes  |
-| --temperature     | Inference temperature, [0.0 - 2.0]    |
-| --retries         | How many times LLM should be queried  |
+| Option            | Description                                         |
+| ----------------- | --------------------------------------------------- |
+| --llm             | 'ollama', 'gemini' or 'mistral'                     |
+| --ollama_base_url | The URL of the Ollama server to query               |
+| --model           | The name of the model to use                        |
+| --api_key         | The API key to use Gemini or Mistral                |
+| --debug           | Extra logging for debugging purposes                |
+| --temperature     | Inference temperature, [0.0 - 2.0]                  |
+| --retries         | How many times LLM should be queried                |
+| --stage           | Either 'pre-commit' (default) or 'pre-merge-commit' |
 
 ## Note about context
 

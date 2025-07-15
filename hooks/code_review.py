@@ -28,6 +28,11 @@ flags.DEFINE_string(
 )
 flags.DEFINE_string("api_key", "", "The API key to use when querying Gemini")
 flags.DEFINE_bool("debug", False, "Activate debug logging")
+flags.DEFINE_string(
+    "stage",
+    "pre-commit",
+    "Either 'pre-commit' or 'pre-merge-commit'. Modifies the git diff command to send the right diff to the LLM.",
+)
 flags.DEFINE_float(
     "temperature",
     0.0,
@@ -96,8 +101,27 @@ def set_logging_verbosity():
         logging.set_verbosity(logging.ERROR)
 
 
+def git_diff_merge_command() -> str:
+    # The commit hash of the branch being merged is in .git/MERGE_HEAD
+    with open(".git/MERGE_HEAD") as f:
+        next_commit = f.read()
+    # The commit hash of the branch being merged into is in HEAD
+    prev_commit = subprocess.check_output(
+        "git rev-parse HEAD",
+        shell=True,
+        cwd=os.getcwd(),
+    ).decode("utf-8")
+    return f"git diff {prev_commit} {next_commit}"
+
+
 def git_diff() -> str:
-    git_diff_command = "git diff --cached"
+    if FLAGS.stage == "pre-commit":
+        git_diff_command = "git diff --cached"
+    elif FLAGS.stage == "pre-merge-commit":
+        git_diff_command = git_diff_merge_command()
+    else:
+        raise ValueError("--stage can only be 'pre-commit' or 'pre-merge-commit'")
+
     raw_output = subprocess.check_output(git_diff_command, shell=True, cwd=os.getcwd())
     return raw_output.decode("utf-8")
 
