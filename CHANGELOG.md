@@ -2,6 +2,10 @@
 
 ## Unreleased (2025-07-14)
 
+### Added
+
+- Add support to run the code review at merge time (pre-merge-commit)
+
 ## v1.3.2 (2025-07-13)
 
 ### Added
