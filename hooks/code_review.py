@@ -120,7 +120,9 @@ def git_diff() -> str:
     elif FLAGS.stage == "pre-merge-commit":
         git_diff_command = git_diff_merge_command()
     else:
-        raise ValueError("--stage can only be 'pre-commit' or 'pre-merge-commit'")
+        raise ValueError(
+            f"Invalid stage value '{FLAGS.stage}'. Must be either 'pre-commit' or 'pre-merge-commit'",
+        )
 
     raw_output = subprocess.check_output(git_diff_command, shell=True, cwd=os.getcwd())
     return raw_output.decode("utf-8")
