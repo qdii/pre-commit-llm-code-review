@@ -102,9 +102,13 @@ def set_logging_verbosity():
 
 
 def git_diff_merge_command() -> str:
-    # The commit hash of the branch being merged is in .git/MERGE_HEAD
-    with open(".git/MERGE_HEAD") as f:
-        next_commit = f.read()
+    try:
+        # The commit hash of the branch being merged is in .git/MERGE_HEAD
+        with open(".git/MERGE_HEAD") as f:
+            next_commit = f.read()
+    except FileNotFoundError:
+        raise RuntimeError(".git/MERGE_HEAD not found. Is this a merg commit?")
+
     # The commit hash of the branch being merged into is in HEAD
     prev_commit = subprocess.check_output(
         "git rev-parse HEAD",
