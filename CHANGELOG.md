@@ -1,10 +1,11 @@
 # Changelog
 
-## Unreleased (2025-07-14)
+## Unreleased
 
 ### Added
 
 - Add support to run the code review at merge time (pre-merge-commit)
+- Consider environment variables for API key if --api_key is not set
 
 ## v1.3.2 (2025-07-13)
 

@@ -52,16 +52,16 @@ Add to your `.pre-commit-config.yaml`:
 
 ## Options
 
-| Option            | Description                                         |
-| ----------------- | --------------------------------------------------- |
-| --llm             | 'ollama', 'gemini' or 'mistral'                     |
-| --ollama_base_url | The URL of the Ollama server to query               |
-| --model           | The name of the model to use                        |
-| --api_key         | The API key to use Gemini or Mistral                |
-| --debug           | Extra logging for debugging purposes                |
-| --temperature     | Inference temperature, [0.0 - 2.0]                  |
-| --retries         | How many times LLM should be queried                |
-| --stage           | Either 'pre-commit' (default) or 'pre-merge-commit' |
+| Option            | Description                                                                                                     |
+| ----------------- | --------------------------------------------------------------------------------------------------------------- |
+| --llm             | 'ollama', 'gemini' or 'mistral'                                                                                 |
+| --ollama_base_url | The URL of the Ollama server to query                                                                           |
+| --model           | The name of the model to use                                                                                    |
+| --api_key         | The API key to use Gemini or Mistral. This overrides environment variables (GEMINI_API_KEY or MISTRAL_API_KEY). |
+| --debug           | Extra logging for debugging purposes                                                                            |
+| --temperature     | Inference temperature, [0.0 - 2.0]                                                                              |
+| --retries         | How many times LLM should be queried                                                                            |
+| --stage           | Either 'pre-commit' (default) or 'pre-merge-commit'                                                             |
 
 ## Note about context
 
