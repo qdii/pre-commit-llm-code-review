@@ -45,7 +45,6 @@ flags.DEFINE_integer(
 )
 flags.DEFINE_integer("retries", 2, "Maximum number of retries when querying a LLM")
 
-
 prompt = """
 You are an expert developer and git super user.
 You do code reviews based on the git diff output between two commits.
@@ -65,15 +64,13 @@ AI OUTPUT:
 
 def new_llm() -> ChatGoogleGenerativeAI | ChatOllama | ChatMistralAI:
     if FLAGS.llm == "gemini":
-        if not FLAGS.api_key:
-            raise ValueError('--api_key must be set when --llm is "gemini"')
         return ChatGoogleGenerativeAI(
             model=FLAGS.model,
             temperature=FLAGS.temperature,
             max_tokens=None,
             timeout=FLAGS.timeout,
             max_retries=FLAGS.retries,
-            google_api_key=FLAGS.api_key,
+            google_api_key=get_api_key(),
         )
     elif FLAGS.llm == "ollama":
         return ChatOllama(
@@ -88,7 +85,7 @@ def new_llm() -> ChatGoogleGenerativeAI | ChatOllama | ChatMistralAI:
             timeout=FLAGS.timeout,
             temperature=FLAGS.temperature,
             max_tokens=None,
-            mistral_api_key=FLAGS.api_key,
+            mistral_api_key=get_api_key(),
             max_retries=FLAGS.retries,
         )
     raise ValueError('--llm should be "gemini", "ollama" or "mistral"')
@@ -130,6 +127,27 @@ def git_diff() -> str:
 
     raw_output = subprocess.check_output(git_diff_command, shell=True, cwd=os.getcwd())
     return raw_output.decode("utf-8")
+
+
+def get_api_key() -> str:
+    if FLAGS.llm not in ["gemini", "mistral"]:
+        raise RuntimeError("Invalid LLM specified: " + FLAGS.llm)
+
+    if FLAGS.api_key:
+        return FLAGS.api_key
+
+    env_name = ""
+    if FLAGS.llm == "gemini":
+        env_name = "GEMINI_API_KEY"
+    elif FLAGS.llm == "mistral":
+        env_name = "MISTRAL_API_KEY"
+
+    api_key = os.getenv(env_name)
+    if not api_key:
+        raise ValueError(
+            f"API key not found for {FLAGS.llm}: neither {env_name} nor --api_key is specified",
+        )
+    return api_key
 
 
 def main(argv):
