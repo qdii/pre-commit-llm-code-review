@@ -1,6 +1,7 @@
 #!/sbin/python3
 import os
 import subprocess
+from enum import Enum
 
 from absl import app
 from absl import flags
@@ -14,13 +15,25 @@ from langchain_ollama import ChatOllama
 from rich.console import Console
 from rich.markdown import Markdown
 
+
+class LLMType(Enum):
+    OLLAMA = "ollama"
+    GEMINI = "gemini"
+    MISTRAL = "mistral"
+
+
 FLAGS = flags.FLAGS
 flags.DEFINE_string(
     "ollama_base_url",
     "http://localhost:11434",
     "The URL of the ollama server",
 )
-flags.DEFINE_string("llm", "ollama", "The LLM to use: 'ollama', 'gemini' or 'mistral'")
+flags.DEFINE_enum(
+    "llm",
+    LLMType.OLLAMA.value,
+    [llm.value for llm in LLMType],
+    f"The LLM to use: {', '.join(f'\'{llm.value}\'' for llm in LLMType)}",
+)
 flags.DEFINE_string(
     "model",
     "mistral-small3.2:latest",
@@ -63,7 +76,7 @@ AI OUTPUT:
 
 
 def new_llm() -> ChatGoogleGenerativeAI | ChatOllama | ChatMistralAI:
-    if FLAGS.llm == "gemini":
+    if FLAGS.llm == LLMType.GEMINI.value:
         return ChatGoogleGenerativeAI(
             model=FLAGS.model,
             temperature=FLAGS.temperature,
@@ -72,14 +85,14 @@ def new_llm() -> ChatGoogleGenerativeAI | ChatOllama | ChatMistralAI:
             max_retries=FLAGS.retries,
             google_api_key=get_api_key(),
         )
-    elif FLAGS.llm == "ollama":
+    elif FLAGS.llm == LLMType.OLLAMA.value:
         return ChatOllama(
             base_url=FLAGS.ollama_base_url,
             model=FLAGS.model,
             reasoning=False,
             timeout=FLAGS.timeout,
         )
-    elif FLAGS.llm == "mistral":
+    elif FLAGS.llm == LLMType.MISTRAL.value:
         return ChatMistralAI(
             model=FLAGS.model,
             timeout=FLAGS.timeout,
@@ -88,7 +101,9 @@ def new_llm() -> ChatGoogleGenerativeAI | ChatOllama | ChatMistralAI:
             mistral_api_key=get_api_key(),
             max_retries=FLAGS.retries,
         )
-    raise ValueError('--llm should be "gemini", "ollama" or "mistral"')
+    raise ValueError(
+        f'--llm should be one of {", ".join(f"\'{llm.value}\'" for llm in LLMType)}',
+    )
 
 
 def set_logging_verbosity():
