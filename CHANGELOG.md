@@ -2,10 +2,17 @@
 
 ## Unreleased
 
+## v2.0.0 (2025-12-20)
+
 ### Added
 
-- Add support to run the code review at merge time (pre-merge-commit)
-- Consider environment variables for API key if --api_key is not set
+- Added new hook `llm-commit-message` that generates a commit message from a diff
+
+## v1.3.5 (2025-12-20)
+
+### Changed
+
+- Fix bad module import
 
 ## v1.3.2 (2025-07-13)
 
