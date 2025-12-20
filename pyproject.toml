@@ -20,6 +20,10 @@ llm-commit-message = "hooks.generate_commit_message:entrypoint"
 [tool.setuptools]
 packages = ["hooks", "hooks.lib"]
 
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["hooks*"]
+
 [build-system]
 requires = ["setuptools >= 77.0.3"]
 build-backend = "setuptools.build_meta"
