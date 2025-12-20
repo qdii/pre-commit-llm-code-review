@@ -2,28 +2,12 @@
 import os
 import subprocess
 import sys
-from enum import Enum
 
 from absl import app
-from absl import flags
-from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_ollama import ChatOllama
+from langchain_core.prompts import PromptTemplate
 
-
-class LLMType(Enum):
-    GEMINI = "gemini"
-    OLLAMA = "ollama"
-
-
-FLAGS = flags.FLAGS
-flags.DEFINE_enum(
-    "llm",
-    LLMType.OLLAMA.value,
-    [llm.value for llm in LLMType],
-    f"The LLM to use: {', '.join(f'\'{llm.value}\'' for llm in LLMType)}",
-)
+from lib import llm
 
 
 def main(argv):
@@ -57,28 +41,10 @@ def main(argv):
 
     """
 
-    llm = None
-    if FLAGS.llm == LLMType.GEMINI.value:
-        llm = ChatGoogleGenerativeAI(
-            model="gemini-2.0-flash",
-            temperature=0,
-            max_tokens=None,
-            timeout=None,
-            max_retries=2,
-            google_api_key=os.environ.get("GEMINI_API_KEY"),
-        )
-    elif FLAGS.llm == LLMType.OLLAMA.value:
-        llm = ChatOllama(
-            base_url="https://llm.dodges.it",
-            model="mistral-small3.2:latest",
-            reasoning=False,
-        )
-    if not llm:
-        exit(2)
-
+    llm_engine = llm.new()
     output_parser = StrOutputParser()
     PROMPT = PromptTemplate(template=prompt, input_variables=["diff"])
-    chain = PROMPT | llm | output_parser
+    chain = PROMPT | llm_engine | output_parser
 
     results = chain.invoke({"diff": diff_output})
 

@@ -17,7 +17,7 @@ dependencies = [
 llm-code-review = "hooks.code_review:entrypoint"
 
 [tool.setuptools]
-packages = ["hooks"]
+packages = ["hooks", "lib"]
 
 [build-system]
 requires = ["setuptools >= 77.0.3"]
