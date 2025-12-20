@@ -1,17 +1,21 @@
 # README.md
 
-A [pre-commit](https://pre-commit.com/) hook that sends the git diff to a LLM,
-so that it performs a code review on it.
+Two [pre-commit](https://pre-commit.com/) hooks:
+
+- `llm-code-review`: sends the git diff to a LLM, so that it performs a code review on it.
+- `llm-commit-message`: sends the git diff to a LLM, so that it can suggest a git commit message
+
+## LLM Code Review
 
 The hook can be executed at two different [stages](https://pre-commit.com/#confining-hooks-to-run-at-certain-stages): pre-commit, or pre-merge-commit.
 
-## Usage with ollama
+### Usage with ollama
 
 Add to your `.pre-commit-config.yaml`:
 
 ```yaml
 - repo: https://github.com/qdii/pre-commit-llm-code-review
-  rev: v1.3.3
+  rev: v2.0.0
   hooks:
     - id: llm-code-review
       args:
@@ -20,13 +24,13 @@ Add to your `.pre-commit-config.yaml`:
         - "--model=mistral-small3.2:latest"
 ```
 
-## Usage with Gemini
+### Usage with Gemini
 
 Add to your `.pre-commit-config.yaml`:
 
 ```yaml
 - repo: https://github.com/qdii/pre-commit-llm-code-review
-  rev: v1.3.3
+  rev: v2.0.0
   hooks:
     - id: llm-code-review
       args:
@@ -35,13 +39,13 @@ Add to your `.pre-commit-config.yaml`:
         - "--api_key=YOUR_API_KEY_HERE"
 ```
 
-## Usage with Mistral
+### Usage with Mistral
 
 Add to your `.pre-commit-config.yaml`:
 
 ```yaml
 - repo: https://github.com/qdii/pre-commit-llm-code-review
-  rev: v1.3.3
+  rev: v2.0.0
   hooks:
     - id: llm-code-review
       args:
@@ -50,7 +54,7 @@ Add to your `.pre-commit-config.yaml`:
         - "--api_key=YOUR_API_KEY_HERE"
 ```
 
-## Options
+### Options
 
 | Option            | Description                                                                                                     |
 | ----------------- | --------------------------------------------------------------------------------------------------------------- |
@@ -63,7 +67,7 @@ Add to your `.pre-commit-config.yaml`:
 | --retries         | How many times LLM should be queried                                                                            |
 | --stage           | Either 'pre-commit' (default) or 'pre-merge-commit'                                                             |
 
-## Note about context
+### Note about context
 
 This hook sends the output of `git diff --cached` to a LLM
 and prompts it to perform a code review on it.
@@ -76,3 +80,21 @@ Second, only the diff is sent to a LLM, not the whole file. As a result,
 the LLM has limited context to work with. This can however be tweaked
 by changing [GIT_DIFF_OPTS](https://git-scm.com/book/en/v2/Git-Internals-Environment-Variables)
 to include more context lines in the output of `git diff`.
+
+## LLM Commit Message
+
+The hook must be executed at stage `prepare-commit-msg`
+
+### Usage with ollama
+
+```yaml
+- repo: https://github.com/qdii/pre-commit-llm-code-review
+  rev: v2.0.0
+  stages: ["prepare-commit-msg"]
+  hooks:
+    - id: llm-commit-message
+      args:
+        - "--llm=ollama"
+        - "--ollama_base_url=https://llm.dodges.it"
+        - "--model=mistral-small3.2:latest"
+```
