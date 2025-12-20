@@ -15,6 +15,29 @@ class LLMType(Enum):
     MISTRAL = "mistral"
 
 
+flags.DEFINE_string(
+    "ollama_base_url",
+    "http://localhost:11434",
+    "The URL of the ollama server",
+)
+flags.DEFINE_string("api_key", "", "The API key to use when querying Gemini")
+flags.DEFINE_string(
+    "model",
+    "mistral-small3.2:latest",
+    "The LLM model to use, e.g. 'gemini-2.5-flash'",
+)
+flags.DEFINE_bool("debug", False, "Activate debug logging")
+flags.DEFINE_float(
+    "temperature",
+    0.0,
+    "Run inference with this temperature. Must be between 0.0 and 2.0",
+)
+flags.DEFINE_integer(
+    "timeout",
+    120,
+    "Number of seconds after which a call to the LLM is aborted",
+)
+flags.DEFINE_integer("retries", 2, "Maximum number of retries when querying a LLM")
 flags.DEFINE_enum(
     "llm",
     LLMType.OLLAMA.value,
