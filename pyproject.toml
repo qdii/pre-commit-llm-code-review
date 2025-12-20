@@ -18,7 +18,6 @@ llm-code-review = "hooks.code_review:entrypoint"
 llm-commit-message = "hooks.generate_commit_message:entrypoint"
 
 [tool.setuptools]
-packages = ["hooks", "hooks.lib"]
 
 [tool.setuptools.packages.find]
 where = ["."]
