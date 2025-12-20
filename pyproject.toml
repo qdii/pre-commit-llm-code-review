@@ -15,7 +15,7 @@ dependencies = [
 
 [project.scripts]
 llm-code-review = "hooks.code_review:entrypoint"
-llm-commit-message = "hooks.generate_commit_message:entrypoint"
+llm-commit-message = "hooks.generate_commit_msg:entrypoint"
 
 [tool.setuptools]
 
