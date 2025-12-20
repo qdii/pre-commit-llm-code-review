@@ -6,6 +6,7 @@ license = "GPL-3.0"
 dependencies = [
   "absl-py",
   "httpx",
+  "langchain",
   "langchain[google-genai]",
   "langchain_mistralai",
   "langchain-ollama",
