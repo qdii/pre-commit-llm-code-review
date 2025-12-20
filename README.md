@@ -11,7 +11,7 @@ Add to your `.pre-commit-config.yaml`:
 
 ```yaml
 - repo: https://github.com/qdii/pre-commit-llm-code-review
-  rev: v1.1.0
+  rev: v1.3.3
   hooks:
     - id: llm-code-review
       args:
@@ -26,7 +26,7 @@ Add to your `.pre-commit-config.yaml`:
 
 ```yaml
 - repo: https://github.com/qdii/pre-commit-llm-code-review
-  rev: v1.1.0
+  rev: v1.3.3
   hooks:
     - id: llm-code-review
       args:
@@ -41,7 +41,7 @@ Add to your `.pre-commit-config.yaml`:
 
 ```yaml
 - repo: https://github.com/qdii/pre-commit-llm-code-review
-  rev: v1.1.0
+  rev: v1.3.3
   hooks:
     - id: llm-code-review
       args:
