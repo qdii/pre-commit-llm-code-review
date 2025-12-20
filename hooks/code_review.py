@@ -11,7 +11,7 @@ from langchain_core.prompts import PromptTemplate
 from rich.console import Console
 from rich.markdown import Markdown
 
-from lib import llm
+from hooks.lib import llm
 
 
 FLAGS = flags.FLAGS

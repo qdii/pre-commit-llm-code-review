@@ -9,7 +9,7 @@ from absl import logging
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate
 
-from lib import llm
+from hooks.lib import llm
 
 FLAGS = flags.FLAGS
 
