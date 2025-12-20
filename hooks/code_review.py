@@ -1,4 +1,4 @@
-#!/sbin/python3
+#!/usr/bin/env python3
 import os
 import subprocess
 
@@ -8,38 +8,18 @@ from absl import logging
 from httpx import ConnectError
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_mistralai import ChatMistralAI
-from langchain_ollama import ChatOllama
 from rich.console import Console
 from rich.markdown import Markdown
 
+from hooks.lib import llm
+
+
 FLAGS = flags.FLAGS
 flags.DEFINE_string(
-    "ollama_base_url",
-    "http://localhost:11434",
-    "The URL of the ollama server",
+    "stage",
+    "pre-commit",
+    "Either 'pre-commit' or 'pre-merge-commit'. Modifies the git diff command to send the right diff to the LLM.",
 )
-flags.DEFINE_string("llm", "ollama", "The LLM to use: 'ollama', 'gemini' or 'mistral'")
-flags.DEFINE_string(
-    "model",
-    "mistral-small3.2:latest",
-    "The LLM model to use, e.g. 'gemini-2.5-flash'",
-)
-flags.DEFINE_string("api_key", "", "The API key to use when querying Gemini")
-flags.DEFINE_bool("debug", False, "Activate debug logging")
-flags.DEFINE_float(
-    "temperature",
-    0.0,
-    "Run inference with this temperature. Must be between 0.0 and 2.0",
-)
-flags.DEFINE_integer(
-    "timeout",
-    120,
-    "Number of seconds after which a call to the LLM is aborted",
-)
-flags.DEFINE_integer("retries", 2, "Maximum number of retries when querying a LLM")
-
 
 prompt = """
 You are an expert developer and git super user.
@@ -58,37 +38,6 @@ AI OUTPUT:
 """
 
 
-def new_llm() -> ChatGoogleGenerativeAI | ChatOllama | ChatMistralAI:
-    if FLAGS.llm == "gemini":
-        if not FLAGS.api_key:
-            raise ValueError('--api_key must be set when --llm is "gemini"')
-        return ChatGoogleGenerativeAI(
-            model=FLAGS.model,
-            temperature=FLAGS.temperature,
-            max_tokens=None,
-            timeout=FLAGS.timeout,
-            max_retries=FLAGS.retries,
-            google_api_key=FLAGS.api_key,
-        )
-    elif FLAGS.llm == "ollama":
-        return ChatOllama(
-            base_url=FLAGS.ollama_base_url,
-            model=FLAGS.model,
-            reasoning=False,
-            timeout=FLAGS.timeout,
-        )
-    elif FLAGS.llm == "mistral":
-        return ChatMistralAI(
-            model=FLAGS.model,
-            timeout=FLAGS.timeout,
-            temperature=FLAGS.temperature,
-            max_tokens=None,
-            mistral_api_key=FLAGS.api_key,
-            max_retries=FLAGS.retries,
-        )
-    raise ValueError('--llm should be "gemini", "ollama" or "mistral"')
-
-
 def set_logging_verbosity():
     if FLAGS.debug:
         logging.set_verbosity(logging.DEBUG)
@@ -96,8 +45,33 @@ def set_logging_verbosity():
         logging.set_verbosity(logging.ERROR)
 
 
+def git_diff_merge_command() -> str:
+    try:
+        # The commit hash of the branch being merged is in .git/MERGE_HEAD
+        with open(".git/MERGE_HEAD") as f:
+            next_commit = f.read()
+    except FileNotFoundError:
+        raise RuntimeError(".git/MERGE_HEAD not found. Is this a merg commit?")
+
+    # The commit hash of the branch being merged into is in HEAD
+    prev_commit = subprocess.check_output(
+        "git rev-parse HEAD",
+        shell=True,
+        cwd=os.getcwd(),
+    ).decode("utf-8")
+    return f"git diff {prev_commit} {next_commit}"
+
+
 def git_diff() -> str:
-    git_diff_command = "git diff --cached"
+    if FLAGS.stage == "pre-commit":
+        git_diff_command = "git diff --cached"
+    elif FLAGS.stage == "pre-merge-commit":
+        git_diff_command = git_diff_merge_command()
+    else:
+        raise ValueError(
+            f"Invalid stage value '{FLAGS.stage}'. Must be either 'pre-commit' or 'pre-merge-commit'",
+        )
+
     raw_output = subprocess.check_output(git_diff_command, shell=True, cwd=os.getcwd())
     return raw_output.decode("utf-8")
 
@@ -114,14 +88,14 @@ def main(argv):
         exit(1)
 
     try:
-        llm = new_llm()
+        llm_engine = llm.new()
     except ValueError as e:
         logging.error("Cannot instantiate LLM: %s", e)
         exit(1)
 
     output_parser = StrOutputParser()
     PROMPT = PromptTemplate(template=prompt, input_variables=["diff"])
-    chain = PROMPT | llm | output_parser
+    chain = PROMPT | llm_engine | output_parser
 
     print("Running diffs...")
     try:

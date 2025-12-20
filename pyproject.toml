@@ -1,7 +1,7 @@
 [project]
 name = "llm-code-review"
 requires-python = ">=3.12"
-version = "1.3.3"
+version = "2.0.0"
 license = "GPL-3.0"
 dependencies = [
   "absl-py",
@@ -15,9 +15,13 @@ dependencies = [
 
 [project.scripts]
 llm-code-review = "hooks.code_review:entrypoint"
+llm-commit-message = "hooks.generate_commit_msg:entrypoint"
 
 [tool.setuptools]
-packages = ["hooks"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["hooks*"]
 
 [build-system]
 requires = ["setuptools >= 77.0.3"]

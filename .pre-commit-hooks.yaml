@@ -13,3 +13,18 @@
     - rich
   stages:
     - pre-commit
+- id: llm-commit-message
+  name: LLM Commit Message
+  description: LLM-generated commit message
+  entry: llm-commit-message
+  language: python
+  verbose: true
+  pass_filenames: true
+  additional_dependencies:
+    - absl-py
+    - httpx
+    - langchain[google-genai]
+    - langchain-ollama
+    - rich
+  stages:
+    - pre-commit

@@ -1,6 +1,18 @@
 # Changelog
 
-## Unreleased (2025-07-14)
+## Unreleased
+
+## v2.0.0 (2025-12-20)
+
+### Added
+
+- Added new hook `llm-commit-message` that generates a commit message from a diff
+
+## v1.3.5 (2025-12-20)
+
+### Changed
+
+- Fix bad module import
 
 ## v1.3.2 (2025-07-13)
 
