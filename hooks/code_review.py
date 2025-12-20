@@ -6,8 +6,8 @@ from absl import app
 from absl import flags
 from absl import logging
 from httpx import ConnectError
-from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import PromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_mistralai import ChatMistralAI
 from langchain_ollama import ChatOllama
