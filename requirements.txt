@@ -109,7 +109,7 @@ packaging==25.0
     #   huggingface-hub
     #   langchain-core
     #   langsmith
-pyasn1==0.6.1
+pyasn1==0.6.2
     # via
     #   pyasn1-modules
     #   rsa
@@ -161,6 +161,7 @@ typer-slim==0.20.1
     # via huggingface-hub
 typing-extensions==4.15.0
     # via
+    #   anyio
     #   google-genai
     #   huggingface-hub
     #   langchain-core
