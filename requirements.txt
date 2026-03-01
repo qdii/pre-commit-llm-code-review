@@ -90,7 +90,7 @@ langgraph-prebuilt==1.0.5
     # via langgraph
 langgraph-sdk==0.3.1
     # via langgraph
-langsmith==0.5.0
+langsmith==0.6.3
     # via langchain-core
 markdown-it-py==4.0.0
     # via rich
@@ -161,6 +161,7 @@ typer-slim==0.20.1
     # via huggingface-hub
 typing-extensions==4.15.0
     # via
+    #   anyio
     #   google-genai
     #   huggingface-hub
     #   langchain-core
